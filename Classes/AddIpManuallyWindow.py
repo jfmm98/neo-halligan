@@ -38,7 +38,7 @@ class AddIpManuallyWindow(QWidget):
         ipValid = True
         if ping3.ping(userInput) == False:
             ipValid = False
-        if ipValid or ipValid == "localhost":
+        if ipValid or userInput == "localhost":
             saveIpInfo = Controller.saveIpToBruteforce(userInput)
             infoPopup.setWindowTitle(saveIpInfo[0])
             layout.addWidget(QLabel(saveIpInfo[1]))
