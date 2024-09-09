@@ -55,7 +55,7 @@ def getHtmlAdvanceData(deviceIp):
         if "screenshot" in service:
             service["screenshot"]["data"] = """<img src="data:image/jpeg;base64,""" + service["screenshot"]["data"] + """">"""
         jsonOfService = json.dumps(service)
-        htmlOfService = json2html.json2html.convert(jsonOfService, clubbing=False)
+        htmlOfService = json2html.json2html.convert(jsonOfService, table_attributes="style=\"background-color: transparent\"; border=\"1\"", clubbing=False)
         htmlOfService = htmlOfService.replace("&lt;", "<").replace("&quot;", "\"").replace("&gt;",">")
         product = ""
         if 'product' in service:
@@ -178,9 +178,8 @@ def createDeviceInfoTable(deviceInfo, comesFromShodan):
     table.resizeRowsToContents()
     return table
 
-# Permite generar un Popup clásico en cualquier lugar de la aplicación.
+# Permite generar un popup clásico en cualquier lugar de la aplicación.
 def createPopup(self, title, content):
-    # Generamos un popup con la información necesaria para el usuario
     infoPopup = QDialog(self)
     infoPopup.setWindowTitle(title)
     layout = QVBoxLayout()
