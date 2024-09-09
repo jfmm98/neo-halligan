@@ -37,7 +37,6 @@ def realizeShodanQuery(userQuery, numberOfResults):
     shodanApi = shodan.Shodan(shodanKey)
     queryResult = shodanApi.search(query=userQuery, limit=numberOfResults, minify=False, fields=['ip_str'])
     return queryResult
-    # for i in range (len(queryResult)):
 
 # Permite obtener información avanzada sobre un dispositivo en concreto.
 def getAdvanceData(deviceIp):
@@ -85,7 +84,12 @@ def saveIpToBruteforce(deviceIp):
         except:
             # Al no haber información en Shodan o ser la key inválida, se ejecuta un script de nmap.
             nmapScanner = nmap.PortScanner()
-            advanceInformation = nmapScanner.scan(deviceIp, "21,80,443,993,27017,1883,1433,3306,5432,110,995,3389,6379,9042,22,25,1080,61613,23,5901,445,139", "-T4 -O -sV")
+            # Hacer reconocimiento de sistema operativo en linux requiere root, por lo que no se añadirá.
+            if os.name == "nt":
+                nmapArguments = "-T4 -O -sV"
+            else:
+                nmapArguments = "-T4 -sV"
+            advanceInformation = nmapScanner.scan(deviceIp, "21,80,443,993,27017,1883,1433,3306,5432,110,995,3389,6379,9042,22,25,1080,61613,23,5901,445,139", nmapArguments)
             pathToSave = infoDirPath + os.sep + "Nmap Info.txt"
             messageToUser = "IP has been successfully added and data has been retrieved from Nmap run."
         os.mkdir(pathToCheck)
