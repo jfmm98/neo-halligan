@@ -70,7 +70,6 @@ class ShodanQueriesWindow(QWidget):
             treeItem = QTreeWidgetItem([ip])
             # Este nodo es un placeholder para añadir la información cuando el elemento sea abierto
             childItem = QTreeWidgetItem(["-"])
-            # Añadir aquí botones
             childItem2 = QTreeWidgetItem(["--"])
             treeItem.addChild(childItem)
             treeItem.addChild(childItem2)
@@ -85,7 +84,6 @@ class ShodanQueriesWindow(QWidget):
             bothButtons.setLayout(bothButtonsLayout)
             self.treeWidget.setItemWidget(childItem2, 0, bothButtons)
             items.append(treeItem)
-            # self.treeWidget.insertTopLevelItem(i, treeItem)
         self.treeWidget.insertTopLevelItems(0, items)
    
     def saveIpToBruteforce(self, neededIp):
