@@ -32,7 +32,7 @@ class BruteforceWindow(QWidget):
         devicesFolder = os.getcwd() + os.sep + "Bruteforce"
         devices = os.listdir(devicesFolder)
         for device in devices:
-            if ".gitignore" in devices:
+            if ".gitignore" in device:
                 devices.remove(device)
         items = []
         for device in devices:
@@ -41,14 +41,14 @@ class BruteforceWindow(QWidget):
             """En esta parte del código se crea el apartado de la información del dispositivo."""
             infoFolder = currentDeviceFolder + os.sep + "Info"
             infoItem = QTreeWidgetItem(["Device information"])
-            tableChildItem = QTreeWidgetItem(["Table placeholder"])
+            tableChildItem = QTreeWidgetItem([""])
             infoItem.addChild(tableChildItem)
             infoFile = os.listdir(infoFolder)[0]
             with open(infoFolder + os.sep +  infoFile, 'r') as advanceInfoFile:
                 advanceInfoDict = json.loads(advanceInfoFile.read())
             if "Shodan" in infoFile:
                 advanceInfoTable = Controller.createDeviceInfoTable(advanceInfoDict, True)
-                buttonsChildItem = QTreeWidgetItem(["Buttons placeholder"])
+                buttonsChildItem = QTreeWidgetItem([""])
                 infoItem.addChild(buttonsChildItem)
                 self.treeWidget.setItemWidget(tableChildItem, 0, advanceInfoTable)
                 advancedButton = QPushButton("Advanced info")
@@ -150,9 +150,9 @@ class BruteforceWindow(QWidget):
             differentOptionsLayout.addWidget(httpWidget)
             optionsWidget.setLayout(differentOptionsLayout)
             optionsWidget.setFixedHeight(20)
-            bruteforceExtraOptions = QTreeWidgetItem(["Extra options placeholder"])
+            bruteforceExtraOptions = QTreeWidgetItem([""])
             # Se añaden los protocolos disponibles en la herramienta.
-            comboboxProtocolsChildItem = QTreeWidgetItem(["Combobox for protocols placeholder"])
+            comboboxProtocolsChildItem = QTreeWidgetItem([""])
             protocolsWidget = QWidget()
             protocolsLayout = QHBoxLayout()
             protocolsLayout.addWidget(QLabel("Select service to bruteforce:"))
@@ -165,7 +165,7 @@ class BruteforceWindow(QWidget):
             attacksItem.addChild(comboboxProtocolsChildItem)
             self.treeWidget.setItemWidget(comboboxProtocolsChildItem, 0, protocolsWidget)
             # Se añaden los puertos disponibles en el dispositivo.
-            comboboxPortsChildItem = QTreeWidgetItem(["Combobox for ports placeholder"])
+            comboboxPortsChildItem = QTreeWidgetItem([""])
             portsWidget = QWidget()
             portsLayout = QHBoxLayout()
             portsLayout.addWidget(QLabel("Select port to bruteforce:"))
@@ -176,7 +176,7 @@ class BruteforceWindow(QWidget):
             attacksItem.addChild(comboboxPortsChildItem)
             self.treeWidget.setItemWidget(comboboxPortsChildItem, 0, portsWidget)
             # Se añade la parte que permite al usuario indicar una lista de usuarios o un usuario en concreto.
-            usersChild = QTreeWidgetItem(["Usernames selection placeholder"])
+            usersChild = QTreeWidgetItem([""])
             userDictPathChild = QTreeWidgetItem([""])
             usersWidget = QWidget()
             layoutForUsernames = QHBoxLayout()
@@ -198,7 +198,7 @@ class BruteforceWindow(QWidget):
             self.treeWidget.setItemWidget(usersChild, 0, usersWidget)
             attacksItem.addChild(userDictPathChild)
             # Se añade la parte que permite al usuario indicar una lista de contraseñas o una contraseña en concreto.
-            passwordsChild = QTreeWidgetItem(["Passwords selection placeholder"])
+            passwordsChild = QTreeWidgetItem([""])
             passDictPathChild = QTreeWidgetItem([""])
             passWidget = QWidget()
             layoutForPasswords = QHBoxLayout()
@@ -223,7 +223,7 @@ class BruteforceWindow(QWidget):
             attacksItem.addChild(bruteforceExtraOptions)
             self.treeWidget.setItemWidget(bruteforceExtraOptions, 0, optionsWidget)
             # Se añade el botón para iniciar el ataque de fuerza bruta.
-            attackButtonPlaceholder = QTreeWidgetItem(["Attack Button placeholder"])
+            attackButtonPlaceholder = QTreeWidgetItem([""])
             runBruteforceButton = QPushButton("Run bruteforce attack")
             runBruteforceButton.pressed.connect(lambda device=device, port=portsOpenCombobox, protocol=protocolsAvailableCombobox, userChild=userDictPathChild, passChild=passDictPathChild,
                                                 amqpSsl=amqpSslCheck, mqttV5Check=mqttV5Check, mqttClientId=mqttClientId, sshAuth=sshAuthMode, sshKeyPassPhrase=sshKeyPassPhrase,
@@ -248,11 +248,11 @@ class BruteforceWindow(QWidget):
                 currentLogLayout.addWidget(currentLogLabel)
                 currentLogLayout.addWidget(currentLogButton)
                 currentLogWidget.setLayout(currentLogLayout)
-                currentLogChild = QTreeWidgetItem(["Current log placeholder"])
+                currentLogChild = QTreeWidgetItem([""])
                 previousAttacksItem.addChild(currentLogChild)
                 self.treeWidget.setItemWidget(currentLogChild, 0, currentLogWidget)
             """ En esta parte del código se crea el botón para eliminar un dispositivo."""
-            deleteChildItem = QTreeWidgetItem(["Delete placeholder"])
+            deleteChildItem = QTreeWidgetItem([""])
             deleteDeviceButton = QPushButton("Delete device")
             deleteDeviceButton.pressed.connect(lambda ip=device: self.deleteDevice(ip))
             # En esta parte se unen las partes que conforman un dispositivo en la interfaz.
@@ -319,6 +319,8 @@ class BruteforceWindow(QWidget):
                       sshAuth, sshKeyPassphrase, 
                       httpMode, httpTarget, httpMethod, httpNtlmDomainCheck, httpNtlmDomain, httpNtlmWorkstationCheck, httpNtlmWorkstation,
                       httpPayloadCheck, httpPayload, httpSuccessCheck, httpSuccess):
+        if portsOpen.currentText() == "":
+            Controller.createPopup(self, "No port available", "No ports available, so the bruteforce attack can't be done.")
         legbaQuery = "\"" + os.getcwd() + os.sep + "Legba" + os.sep
         if os.name == "nt":
             legbaQuery += "Windows" + os.sep + "legba.exe\" "
@@ -392,7 +394,6 @@ class BruteforceWindow(QWidget):
         with open(outputPath, "w+") as file:
             file.write("The following command for legba has been executed:\n" + legbaQuery + "\nIf there is not results below, it means that no results from the brute force were obtained.\n")
         if os.name == "nt":
-            print(legbaQuery)
             os.system("start cmd /k \"" + legbaQuery + "\"")
         else:
-            os.system("gnome-terminal -e 'bash -c \"" + legbaQuery + ";bash\"'")
+            os.system("gnome-terminal -- bash -c \"" + legbaQuery + "\"")
