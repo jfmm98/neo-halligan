@@ -24,6 +24,7 @@ class HowToWindow(QWidget):
                             Finally, you can add the found devices and then do the brute force on the ports needed.</p>
                             """
         self.appHowTo.setText(appInstructions)
+        self.appHowTo.setFont("Arial")
         self.appHowTo.setAlignment(Qt.AlignmentFlag.AlignTop)
         bruteforceInstructions = """<h2>Brute force instructions</h2>
                                     <p style="font-size: 14px">After adding ips via Shodan or manually, now you are able to do brute force attacks. In order to do it,
@@ -64,6 +65,7 @@ class HowToWindow(QWidget):
                                     </p>
                                     """
         self.bruteforceHowTo.setText(bruteforceInstructions)
+        self.bruteforceHowTo.setFont("Arial")
         self.bruteforceHowTo.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.guidesLayout.addWidget(self.appHowTo)
         self.guidesLayout.addWidget(self.shodanHowTo)
