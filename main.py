@@ -35,7 +35,8 @@ def createGui():
     appIcon = QIcon(pixmap)
     app.setWindowIcon(appIcon)
     # Permite tener el icono de la aplicación en la barra de tareas de Windows
-    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('Jfmm.UNIR.1')
+    if os.name == "nt":
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('Jfmm.UNIR.1')
     # Creamos la estructura básica de la aplicación
     mainWindow = QMainWindow()
     tabLayout = QTabWidget()
