@@ -163,11 +163,12 @@ def createDeviceInfoTable(deviceInfo, comesFromShodan):
             table.setItem(table.rowCount() - 1, 1, QTableWidgetItem(deviceInfo['city']))
     else:
         nmapResults = list(deviceInfo['scan'].values())[0]
-        osInfo = nmapResults['osmatch']
-        if 'name' in osInfo:
-            table.insertRow(table.rowCount())
-            table.setItem(table.rowCount() - 1, 0, QTableWidgetItem("Os:"))
-            table.setItem(table.rowCount() - 1, 1, QTableWidgetItem(osInfo['name']))
+        if os.name == "nt":
+            osInfo = nmapResults['osmatch']
+            if 'name' in osInfo:
+                table.insertRow(table.rowCount())
+                table.setItem(table.rowCount() - 1, 0, QTableWidgetItem("Os:"))
+                table.setItem(table.rowCount() - 1, 1, QTableWidgetItem(osInfo['name']))
         tcpScan = nmapResults['tcp']
         services = ""
         for ip in tcpScan.keys():
