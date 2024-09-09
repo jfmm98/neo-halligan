@@ -39,6 +39,9 @@ class BruteforceWindow(QWidget):
         self.treeWidget.header().setDefaultAlignment(Qt.AlignmentFlag.AlignHCenter)
         devicesFolder = os.getcwd() + os.sep + "Bruteforce"
         devices = os.listdir(devicesFolder)
+        for device in devices:
+            if ".gitignore" in devices:
+                devices.remove(device)
         items = []
         for device in devices:
             firstLevel = QTreeWidgetItem([device])
