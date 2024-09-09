@@ -13,7 +13,8 @@ class AddIpManuallyWindow(QWidget):
                           if there is no data about the IP, a nmap run<br> 
                           will be done in order to obtain data. However,<br>
                           that nmap run will only cover the default ports<br> 
-                          of the protocols available on the brute force module.""")
+                          of the protocols available on the brute force module.<br>
+                          If you want to check your own device, write localhost.""")
     layoutW1 = QVBoxLayout()
     timer = QTimer()
 
@@ -37,7 +38,7 @@ class AddIpManuallyWindow(QWidget):
         ipValid = True
         if ping3.ping(userInput) == False:
             ipValid = False
-        if ipValid:
+        if ipValid or ipValid == "localhost":
             saveIpInfo = Controller.saveIpToBruteforce(userInput)
             infoPopup.setWindowTitle(saveIpInfo[0])
             layout.addWidget(QLabel(saveIpInfo[1]))
