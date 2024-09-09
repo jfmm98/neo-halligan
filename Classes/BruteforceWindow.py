@@ -1,11 +1,3 @@
-# Usar QRunnable para hacer ataques de fuerza bruta.
-# Primer nivel IPs, segundo nivel Ataques - Info - Ataques previos
-# Tercer nivel: Ataques -> Selector con stacked view (la mayoria el normal solo seleccionar)
-# Ataques --> Selector de protocolo, Indicar si usuario o diccionario, contraseña o usuario y opciones especiales
-# Info -> Misma tabla que en Shodan Query
-# Ataques previos -> Mostrar cada ataque y al expandir resultado y abrir txt
-# Añadir posibilidad de borrar dispositivo
-
 import os
 import json
 import shutil
