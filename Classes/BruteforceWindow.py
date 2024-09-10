@@ -36,10 +36,13 @@ class BruteforceWindow(QWidget):
                 devices.remove(device)
         items = []
         for device in devices:
-            firstLevel = QTreeWidgetItem([device])
             currentDeviceFolder = devicesFolder + os.sep + device
             """En esta parte del código se crea el apartado de la información del dispositivo."""
             infoFolder = currentDeviceFolder + os.sep + "Info"
+            # Si es IPV6, se cambian los guiones utilizados para guardar el fichero y se devuelve su valor, :.
+            if "-" in device:
+                device = device.replace("-", ":")
+            firstLevel = QTreeWidgetItem([device])
             infoItem = QTreeWidgetItem(["Device information"])
             tableChildItem = QTreeWidgetItem([""])
             infoItem.addChild(tableChildItem)
@@ -321,6 +324,7 @@ class BruteforceWindow(QWidget):
                       httpPayloadCheck, httpPayload, httpSuccessCheck, httpSuccess):
         if portsOpen.currentText() == "":
             Controller.createPopup(self, "No port available", "No ports available, so the bruteforce attack can't be done.")
+            return
         legbaQuery = "\"" + os.getcwd() + os.sep + "Legba" + os.sep
         if os.name == "nt":
             legbaQuery += "Windows" + os.sep + "legba.exe\" "
@@ -353,7 +357,10 @@ class BruteforceWindow(QWidget):
         except:
             Controller.createPopup(self, "Password/s not added correctly", "Passwords have not been added successfully, please check it and retry.")
             return
+        # Es un dispositivo ipv6
         outputPath = os.getcwd() + os.sep + "Bruteforce" + os.sep + device + os.sep + "Attacks" + os.sep
+        if ":" in device:
+            outputPath = os.getcwd() + os.sep + "Bruteforce" + os.sep + device.replace(":", "-") + os.sep + "Attacks" + os.sep
         outputPath += protocolSelected.currentText() + "-Port" + portsOpen.currentText() + "-Date" + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + ".txt"
         # Creamos el comando de legba acorde a la información proporcionada por el usuario.
         extraArguments = ""

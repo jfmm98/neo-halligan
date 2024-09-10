@@ -67,6 +67,9 @@ def getHtmlAdvanceData(deviceIp):
 # Permite guardar una IP en el módulo de fuerza bruta. Si no hay información en Shodan, se ejecutará Nmap.
 def saveIpToBruteforce(deviceIp):
     pathToCheck = "Bruteforce" + os.sep + deviceIp
+    # Se comprueba si es IPV6
+    if ":" in deviceIp:
+        pathToCheck = "Bruteforce" + os.sep + deviceIp.replace(":", "-")
     if os.path.isdir(pathToCheck):
         return ("Already added", "The IP has been already added.")
     else:
