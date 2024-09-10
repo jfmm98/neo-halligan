@@ -14,7 +14,6 @@ class BruteforceWindow(QWidget):
     layoutW1 = QVBoxLayout()
     treeWidget = QTreeWidget()
     timer = QTimer()
-    threadPool = QThreadPool()
 
     # Se define el constructor de la clase. En este, se crean y gestionan los diversos elementos de la interfaz.
     def __init__(self, parent):
@@ -294,12 +293,6 @@ class BruteforceWindow(QWidget):
     
     # Permite mostrar al usuario las opciones adicionales del protocolo si es necesario.
     def showProtocolExtraOptions(self, protocol, layout, widget, parent):
-        # currentWidget = self.treeWidget.itemWidget(child, 0)
-        """
-        h = self.stackedWidget.currentWidget().sizeHint().height()
-        self.stackedWidget.setFixedHeight(h)
-        """
-        # currentWidgetLayout = currentWidget.layout()
         neededHeight = 20
         if protocol == "amqp":
             layout.setCurrentIndex(1)
