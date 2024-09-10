@@ -11,5 +11,7 @@ Neo-Halligan is a brute force python project that merges Shodan python API and l
 - Install the packages available on the requirements.txt file. In order to do that, you can either do pip install -r path/requirements.txt or install them on a virtual environment so it will not be installed on your computer directly (https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/).
 - In order to work on Linux, you must have installed gnome-terminal (if not installed) and libxcb-cursor-dev packages.
 - Run the main.py file with python.
+- If you have a python error with the ping3 package on Windows while trying to add an IP manually, try to run it as administrator.
+- On Linux, ping won't be done while trying to check the manually added IP. For that reason, if you add an IP that, while has the IP structure, cannot be reached, the brute force tab will fail. Just delete the folder on Bruteforce for the device that you tried to add and then run the app again.
 - On the app, if you want to use the shodan capabilities, you must have an account with at least a membership tier. That tier can be obtained for free if you have an academic email and you email the Shodan support. However, if you don't add a Shodan account key, you can manually add an IP and a nmap run will be done, but only for the default ports on the supported protocols listed above.
 - On the How to use tab on the application you can have more information about the use of the different functionalities that Neo-Halligan offers.
