@@ -3,6 +3,7 @@ from PySide6.QtCore import *
 from . import Controller
 import ping3
 import ipaddress
+import os
 
 
 # Clase para la ventana que permite guardar la key de Shodan.
@@ -40,15 +41,24 @@ class AddIpManuallyWindow(QWidget):
         layout = QVBoxLayout()
         infoPopup = QDialog(self)
         ipValid = True
-        if ping3.ping(userInput) == False:
-            ipValid = False
-            # Comprobación IPv6, ya que ping3 no trabaja con IPv6.
-            if ":" in userInput:
-                try:
-                    ipaddress.ip_address(userInput)
-                    ipValid = True
-                except:
-                    ipValid = False
+        # Si el sistema es Windows, se realizará un ping para comprobar que se puede llegar a la IP indicada.
+        if os.name == "nt":
+            if ping3.ping(userInput) == False:
+                ipValid = False
+                # Comprobación IPv6, ya que ping3 no trabaja con IPv6.
+                if ":" in userInput:
+                    try:
+                        ipaddress.ip_address(userInput)
+                        ipValid = True
+                    except:
+                        ipValid = False
+        # Si el sistema no es Windows, no se realizarán pings ICMP (al necesitar root en Linux).
+        else:
+            try:
+                ipaddress.ip_address(userInput)
+                ipValid = True
+            except:
+                ipValid = False
         if ipValid or userInput == "localhost":
             saveIpInfo = Controller.saveIpToBruteforce(userInput)
             infoPopup.setWindowTitle(saveIpInfo[0])
