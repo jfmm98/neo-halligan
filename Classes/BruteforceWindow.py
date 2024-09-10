@@ -269,6 +269,9 @@ class BruteforceWindow(QWidget):
     
     # Permite borrar un dispositivo guardado en la herramienta.
     def deleteDevice(self, deviceIp):
+        # Se comprueba si la dirección es IPV6
+        if ":" in deviceIp:
+            deviceIp = deviceIp.replace(":", "-")
         pathToDeviceFolder = os.getcwd() + os.sep + "Bruteforce" + os.sep + deviceIp
         shutil.rmtree(pathToDeviceFolder)
         self.initializeTreeWidget()

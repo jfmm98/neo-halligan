@@ -2,6 +2,8 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from . import Controller
 import ping3
+import ipaddress
+
 
 # Clase para la ventana que permite guardar la key de Shodan.
 class AddIpManuallyWindow(QWidget):
@@ -18,6 +20,7 @@ class AddIpManuallyWindow(QWidget):
     layoutW1 = QVBoxLayout()
     timer = QTimer()
 
+    # Permite inicializar los elementos necesarios para la ventana.
     def __init__(self, parent):
         super().__init__()
         self.userInputElement.setPlaceholderText("Add IP")
@@ -30,6 +33,7 @@ class AddIpManuallyWindow(QWidget):
         self.setLayout(self.layoutW1)
         self.setWindowTitle("Add IP Manually")
     
+    # Permite guardar una IP, comprobando si se puede encontrar el host.
     def saveIPAux(self):
         QApplication.instance().setOverrideCursor(Qt.CursorShape.BusyCursor)
         userInput = self.userInputElement.text().strip()
@@ -38,6 +42,13 @@ class AddIpManuallyWindow(QWidget):
         ipValid = True
         if ping3.ping(userInput) == False:
             ipValid = False
+            # Comprobación IPv6, ya que ping3 no trabaja con IPv6.
+            if ":" in userInput:
+                try:
+                    ipaddress.ip_address(userInput)
+                    ipValid = True
+                except:
+                    ipValid = False
         if ipValid or userInput == "localhost":
             saveIpInfo = Controller.saveIpToBruteforce(userInput)
             infoPopup.setWindowTitle(saveIpInfo[0])
@@ -52,5 +63,6 @@ class AddIpManuallyWindow(QWidget):
         infoPopup.setLayout(layout)
         infoPopup.exec()
     
+    # La función permite ejecutar el guardado de una IP.
     def saveIP(self):
         self.timer.singleShot(250, self.saveIPAux)
